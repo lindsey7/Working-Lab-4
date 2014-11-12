@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}[1in]
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\begin{document}
+
+\title{\large Lab 4: Cloud Data\\Statistics 215A, Fall 2014}
+\author{Lindsey Hearn}
+\date{12 November 2014}
+\maketitle
+
+\begin{center}\url{https://github.com/lindsey7/STAT-215A-Lab-4}\end{center}
+
+\section{EDA}
+Figure 1 plots the presence and absence of clouds, \texttt{expert==1} and \texttt{expert==-1}, respectively, by MISR image, according to X-Y coordinates.   Figure 1 uses a subset of the data for which expert labels exist, omitting \texttt{expert==0}.  The dark shading indicates the presence of a cloud, \texttt{expert==1}, while the light shading indicates the absence of a cloud, \texttt{expert==-1}. \\
+\indent Figure 2 plots the spatial distribution of radiance for each angle in the image files.  Figures 2 (a), (b), (c) present markedly similar spatial distributions, while figures 2 (d) and (e) present similar arrangements.  Nevertheless, radiance distribution exhibits a high degree of similarly across all angles.  Figure 3 presents the conditional density of radiance by angle. Figure 3 restricts attention to classified observations.  The blue region corresponds to \texttt{expert==1}, indicating the presence of a cloud, while the gray region corresponds to \texttt{expert==-1}, indicating the absence of a cloud.  The conditional densities are similar across angles, with slight variation in the distribution of radiance for \texttt{expert==-1}.\\
+\indent Figures 3, 4, and 5 plot the conditional densities for CORR, NDAI, and SD, respectively. Within each figure, the densities are presented separately, by image.  Collectively, CORR, NDAI, and SD exhibit more correspondence to the presence and absence of clouds, than the angles in the previous plots. Furthermore, the CORR, NDAI, and SD features are less correlated than the angles. This, in conjunction with the greater association with the \texttt{expert} label, make the features compelling candidates for predictors in the modeling exercise. The table below provides the pairwise correlation matrix across angles, demonstrating the high level of correlation between angles' radiances.  
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.6]{corrplot.png}
+\end{figure}
+Whereas the subsequent table below documents a lower average level of correlation between features CORR, NDAI, and SD. 
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.62]{corr_ndai.png}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image1_expert.pdf}
+  \caption{Image 1}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image2_expert.pdf}
+  \caption{Image 2}
+  \label{fig:sfig2}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image3_expert.pdf}
+  \caption{Image 3}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Expert labels according to X-Y coodinates}
+\label{fig:fig}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{xy_df.pdf}
+  \caption{DF}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{xy_cf.pdf}
+  \caption{CF}
+  \label{fig:sfig2}%
+\end{subfigure}
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{xy_bf.pdf}
+  \caption{BF}
+  \label{fig:sfig2}
+\end{subfigure}
+
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{xy_af.pdf}
+  \caption{AF}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{xy_an.pdf}
+  \caption{AN}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Spatial distribution of radiance by angle}
+\label{fig:fig}
+\end{figure}
+
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{density_df.pdf}
+  \caption{DF}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{density_cf.pdf}
+  \caption{CF}
+  \label{fig:sfig2}%
+\end{subfigure}
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{density_bf.pdf}
+  \caption{BF}
+  \label{fig:sfig2}
+\end{subfigure}
+
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{density_af.pdf}
+  \caption{AF}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.3]{density_an.pdf}
+  \caption{AN}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Density plots by presence and absence of clouds}
+\label{fig:fig}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image1_den_corr.pdf}
+  \caption{Image 1}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image2_den_corr.pdf}
+  \caption{Image 2}
+  \label{fig:sfig2}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image3_den_corr.pdf}
+  \caption{Image 3}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Density plots, CORR}
+\label{fig:fig}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image1_den_ndai.pdf}
+  \caption{Image 1}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image2_den_ndai.pdf}
+  \caption{Image 2}
+  \label{fig:sfig2}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image3_den_ndai.pdf}
+  \caption{Image 3}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Density plots, NDAI}
+\label{fig:fig}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image1_den_sd.pdf}
+  \caption{Image 1}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image2_den_sd.pdf}
+  \caption{Image 2}
+  \label{fig:sfig2}
+\end{subfigure}%
+\begin{subfigure}{.33\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{image3_den_sd.pdf}
+  \caption{Image 3}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Density plots, SD}
+\label{fig:fig}
+\end{figure}
+
+\section{Modeling}
+\subsection{Selection of Predictors}
+Assuming the expert labels represent the true classification of the presence of clouds, CORR, NDAI, and SD predict the presence of clouds better than the radiances of angles.  The conditional densities in figures 4, 5, and 6 generally exhibit less overlap in the two distributions than the conditional densities represented in figure 3.  \\
+\indent Calculating the false positive rate (FPR) and true positive rate (TPR) using predicted responses from logistic regressions using angles as predictors in one specification and the alternate predictors in another specification: the alternate predictors (CORR, NDAI, and SD) produce a much higher TPR value, 0.8718 compared to 0.6925.  The FPR and TPR for the two models are assessed using a threshold of 0.5. Though the alternate predictors yield a higher false positive rate (0.094 compared to 0.0527) the gain in correct positive classifications is greater than the increase in false positive classifications. 
+\subsection{Binary Classification Methods}
+\begin{enumerate}
+\item[]{\bf Logistic Regression Model (GLM)}\\
+\\
+Logistic regression predicts a binary outcome from a set of continuous or categorical predictors. The binary outcome of interest, in this case, \texttt{cloud} (the factor transformation of the \texttt{expert} term from the previous section), is distributed according to the Bernoulli distribution. The model predicts the probability that \texttt{cloud==1} according to the logistic distribution.  Logistic regression may be preferred to discriminant function analysis as the necessary assumptions are less prohibitive. 
+\newpage
+\item[]{\bf Linear Discriminant Analysis (LDA)} \\
+\\
+The linear discriminant analysis (LDA) predicts classes of events or outcomes. The critical motivating assumptions are: (a) normally distributed predictors; (b) full rank covariance matrices; and (c) homoskedastic random variables. 
+\item[]{\bf Random Forest Model }\\
+\\
+The random forest model applies the technique of bootstrap aggregating (bagging) to trees, averaging results by tree.  Random forests correct for the potential overfitting that may occur in tree learning systems, by averaging deep trees.  
+\end{enumerate}
+
+\subsection{Cross-validation}
+Figure 7 presents comparisons of the accuracy of the logistic model, linear discriminant analysis, and random forest model. Accuracy represents the average agreement rate. In this case, the agreement fraction is averaged over 10 cross-validation iterations.  The default number of iterations using the \texttt{caret} training package is set at $K=10$ (see R code for more detail).  The specification is reasonable as the 10-fold cross-validation allows the model to correct for overfitting in a particular subset, while producing shorter run times than $K>10$.  Using the \texttt{preProc} function in the \texttt{caret} package, the data is centered and scaled, prior to training.  Random forests appear to preform better than LDA, as the average agreement fraction is greater with the random forest method (figure 7 (b)), while LDA appears to yield higher average agreement than the logistic model (figure 7 (a)).   
+\begin{figure}[!h]
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.4]{xy_lda_glm.pdf}
+  \caption{LDA-GLM}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.4]{xy_lda_rf.pdf}
+  \caption{LDA-RF}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Accuracy comparison GLM-LDA-RF}
+\label{fig:fig}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{rf_train_roc}
+\caption{ROC }
+\end{figure}
+\indent The random forest model has the highest average accuracy of the 3 methods examined in detail within this report (see R code for additional specifications): an average accuracy of approximately 0.92 compared with 0.90 for LDA.  Figure 8 plots the receiver operating characteristic (ROC), using repeated cross-validation, against the number of randomly selected parameters.  The ROC is highest for 2 predictors.  Figure 9 presents the ROC curve for the tuned random forest model, using \texttt{mtry==2}, the mtry value returned from the initial random forest model.  \\
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{ROC_rf}
+\caption{ROC curve for random forest model}
+\end{figure}
+\subsection{Predicted Values}
+\indent Figure 10 (a) plots the spatial distribution of the predicted presence and absence of clouds in the \texttt{test.data} dataset, while figure 10 (b) plots the actual distribution the random forest model attempts to predict.  The dark shading indicates the absence of clouds, while the light shading indicates the presence of clouds. The spatial distributions are relatively similar with the predicted distribution following generally the same pattern according to X-Y coordinates. Nevertheless, the predictions produce false positives in the lighter region, while false negatives are sparse. \\
+\begin{figure}[!h]
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.4]{prediction_spatial}
+  \caption{Predictions}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\linewidth}
+  \centering
+  \includegraphics[scale=0.4]{truth_cloud}
+  \caption{Observed \texttt{cloud} indicator}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Spatial distribution of predictions and true indicators using \texttt{test.data}}
+\label{fig:fig}
+\end{figure}
+
+\indent While the predictions produce reliable indicators for presence of clouds within the aggregated image files used for this lab, the predictions could correspond to specific features of the particular image files used in conducting the analysis.  Though the random forest model produces generally accurate predictions, the model could be overly responsive to particular features of the \texttt{image.txt} files. However, the model appears to predict the presence of clouds well, with a low false positive rate. Therefore, perhaps this particular random forest model would produce more reliable estimates of the presence of clouds, rather than the absence of clouds, in future data without expert labels.   
+\section{Reproducibility}
+The repository for this project is provided preceding the first section of this report.  The repository contains the requisite files: a README file describing how to reproduce this report; an R file with code to reproduce the statistical and graphical analysis; and the raw .tex file.  
+
+\end{document}
+
+
+
+
+  
